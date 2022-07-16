@@ -2,78 +2,81 @@
 
 using namespace std;
 
-//int rec_A[] = {};
-//int rec_B[] = {};
 
 void rectan_C(int[], int[]);
+void separadorDigitos(int, int[]); //Separa las cifras de el numero entero ingresado y los agrega al arreglo que corresponde.
 
+int recC[4];
 
 int main()
 {
-    int rec_A[] = {0,0,8,4};
-    int rec_B[] = {5,2,6,7};
-    int rec_C[4];
-    int tamano = sizeof(rec_A) / 4;
-    int x = 0; // Coordenadas en el eje x.
-    int y = 0; // Coordenadas en el eje y.
-    int b = 0; // Base del rectangulo.
-    int h = 0; // Altura del rectangulo.
+    int recA[4];
+    int recB[4];
+    int numA = 0;
+    int numB = 0;
+    cout << "Ingrese un numero de 4 digitos con los datos del rectangulo 1: "; cin >> numA;
+    cout << "Ingrese un numero de 4 digitos con los datos del rectangulo 2: "; cin >> numB;
 
-    for(int i = 0; i < tamano; i++){
-        if(i == 0){
-            x = rec_A[i] + rec_B[i];
-            rec_C[i] = x;
-        }
-        else if(i == 1){
-            y = rec_A[i] + rec_B[i];
-            rec_C[i] = y;
-        }
-        else if(i == 2){
-            b = rec_A[i] - rec_B[i];
-            rec_C[i + 1] = b;
-        }
-        else if(i == 3){
-            h = rec_A[i] - rec_B[i];
-            rec_C[i - 1] = h;
-        }
+    separadorDigitos(numA, recA);
+    separadorDigitos(numB, recB);
+    cout << "El rectangulo interseccion C es: ";
+    rectan_C(recA, recB);
 
-    }
-    for(int i = 0; i < tamano; i++){
-        cout << rec_C[i] << endl;
+    for(int i = 0; i < 4; i++){
+        cout << recC[i];
     }
     cout << endl;
+
 
     return 0;
 }
 
-void rectan_C(int rec_A[], int rec_B[]){
-    int rec_C[4];
-    int tamano = sizeof(rec_A) / 4;
-    int *ptr = rec_C;
+void rectan_C(int recA[], int recB[]){
+    int *ptrC = recC;
     int x = 0; // Coordenadas en el eje x.
     int y = 0; // Coordenadas en el eje y.
     int b = 0; // Base del rectangulo.
     int h = 0; // Altura del rectangulo.
 
-    for(int i = 0; i < tamano; i++){
+    for(int i = 0; i < 4; i++){
         if(i == 0){
-            x = rec_A[i] + rec_B[i];
-            rec_C = &ptr;
+            x = recA[i] + recB[i];
+            *ptrC = x;
         }
         else if(i == 1){
-            y = rec_A[i] + rec_B[i];
-            rec_C[i] = y;
+            y = recA[i] + recB[i];
+            *(ptrC + i) = y;
         }
         else if(i == 2){
-            b = rec_A[i] - rec_B[i];
-            rec_C[i + 1] = b;
+            h = recA[i] - recB[i];
+            if(h < 0){
+                h = h * (-1);
+            }
+            *((ptrC + i) + 1) = h;
         }
         else if(i == 3){
-            h = rec_A[i] - rec_B[i];
-            rec_C[i - 1] = h;
+            b = recA[i] - recB[i];
+            if(b < 0){
+                b = b * (-1);
+            }
+            *((ptrC + i) - 1) = b;
         }
-
     }
+}
+void separadorDigitos(int num, int arreglo[]){
+    int divisor = 1000;
+    int digito = 0;
+    int resto = num;
+    int *ptr = arreglo;
+
+    for(int i = 0; resto > 0; i++){
+        digito = resto / divisor;
+        resto = resto % divisor;
+        divisor = divisor / 10;
+        *ptr = digito;
+        ptr++;
+    }
+
 }
 
 
